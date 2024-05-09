@@ -9,7 +9,7 @@ CMAKE = /usr/bin/cmake
 GMAKE = /usr/bin/gmake
 GMAKE_NUMJOBS = -j4
 
-SRCDIR = qic-qasm
+SRCDIR = qci-qasm
 TOPDIR = $(CWD)
 TOPSRCDIR = $(TOPDIR)/$(SRCDIR)
 TOPBUILDDIR = $(TOPDIR)/build

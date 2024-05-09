@@ -91,13 +91,7 @@ ASTType ASTExpressionValidator::ResolveOperatorType(const ASTOperatorNode* E,
         if (const ASTFunctionDefinitionNode* FDN =
             dynamic_cast<const ASTFunctionDefinitionNode*>(FCN->GetFunctionDefinition()))
           RTy = FDN->GetResultType();
-        else
-          RTy = ASTTypeUndefined;
-      } else {
-        RTy = ASTTypeUndefined;
       }
-    } else {
-      RTy = ASTTypeUndefined;
     }
   }
     break;
@@ -164,19 +158,19 @@ ASTType ASTExpressionValidator::ResolveOperandType(const ASTOperandNode* E,
     }
   }
     break;
+  case ASTTypeFunctionCall: {
+    if (const ASTOperandNode* Op = dynamic_cast<const ASTOperandNode*>(E)) {
+      if (const ASTFunctionCallNode* FCN =
+          dynamic_cast<const ASTFunctionCallNode*>(Op->GetExpression())) {
+        if (const ASTFunctionDefinitionNode* FDN =
+            dynamic_cast<const ASTFunctionDefinitionNode*>(FCN->GetFunctionDefinition()))
+          RTy = FDN->GetResultType();
+      }
+    }
+  }
+    break;
   default:
     break;
-  }
-
-  if (RTy == ASTTypeFunctionCall) {
-    if (const ASTFunctionCallNode* FCN = dynamic_cast<const ASTFunctionCallNode*>(Ex)) {
-      if (const ASTFunctionDefinitionNode* FDN =
-          dynamic_cast<const ASTFunctionDefinitionNode*>(FCN->GetFunctionDefinition()))
-        RTy = FDN->GetResultType();
-      else RTy = ASTTypeUndefined;
-    } else {
-      RTy = ASTTypeUndefined;
-    }
   }
 
   return RTy;
