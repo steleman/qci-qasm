@@ -156,6 +156,9 @@ const char* PrintTypeEnum(ASTType Type) {
     case ASTTypeCBitNodeMap:
       return "ASTTypeCBitNodeMap";
       break;
+    case ASTTypeCeil:
+      return "ASTTypeCeil";
+      break;
     case ASTTypeCos:
       return "ASTTypeCos";
       break;
@@ -353,6 +356,9 @@ const char* PrintTypeEnum(ASTType Type) {
       break;
     case ASTTypeFloatArray:
       return "ASTTypeFloatArray";
+      break;
+    case ASTTypeFloor:
+      return "ASTTypeFloor";
       break;
     case ASTTypeForLoop:
       return "ASTTypeForLoop";
@@ -939,6 +945,9 @@ const char* PrintTypeEnum(ASTType Type) {
     case ASTTypeTranslationUnit:
       return "ASTTypeTranslationUnit";
       break;
+    case ASTTypeTrunc:
+      return "ASTTypeTrunc";
+      break;
     case ASTTypeTypedef:
       return "ASTTypeTypedef";
       break;
@@ -1202,6 +1211,15 @@ const char* PrintOpTypeOperator(ASTOpType OpTy, const std::string& Op) {
   case ASTOpTypeSqrt:
     return "sqrt";
     break;
+  case ASTOpTypeCeil:
+    return "ceil";
+    break;
+  case ASTOpTypeFloor:
+    return "floor";
+    break;
+  case ASTOpTypeTrunc:
+    return "truncate";
+    break;
   default:
     return "<unknown>";
     break;
@@ -1301,6 +1319,9 @@ const char* PrintOpTypeEnum(ASTOpType Type) {
     case ASTOpTypeBitOrAssign:
       return "ASTOpTypeBitOrAssign";
       break;
+    case ASTOpTypeCeil:
+      return "ASTOpTypeCeil";
+      break;
     case ASTOpTypeXor:
       return "ASTOpTypeXor";
       break;
@@ -1327,6 +1348,9 @@ const char* PrintOpTypeEnum(ASTOpType Type) {
       break;
     case ASTOpTypeGE:
       return "ASTOpTypeGE";
+      break;
+    case ASTOpTypeFloor:
+      return "ASTOpTypeFloor";
       break;
     case ASTOpTypeNegate:
       return "ASTOpTypeNegate";
@@ -1396,6 +1420,9 @@ const char* PrintOpTypeEnum(ASTOpType Type) {
       break;
     case ASTOpTypeSqrt:
       return "ASTOpTypeSqrt";
+      break;
+    case ASTOpTypeTrunc:
+      return "ASTOpTypeTrunc";
       break;
     case ASTOpTypeNone:
       return "ASTOpTypeNone";
@@ -1570,6 +1597,15 @@ const char* PrintDashOpTypeEnum(ASTOpType OTy) {
       break;
     case ASTOpTypePow:
       return "pow";
+      break;
+    case ASTOpTypeCeil:
+      return "ceil";
+      break;
+    case ASTOpTypeFloor:
+      return "floor";
+      break;
+    case ASTOpTypeTrunc:
+      return "truncate";
       break;
     case ASTOpTypeLeftShift:
       return "left-shift";

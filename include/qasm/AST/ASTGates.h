@@ -33,6 +33,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <cstdint>
 #include <cassert>
 
 namespace QASM {
@@ -44,6 +45,28 @@ class ASTGateNode : public ASTExpressionNode {
   friend class ASTGateNegControlNode;
   friend class ASTGateInverseNode;
   friend class ASTGatePowerNode;
+  friend class ASTTypeSystemBuilder;
+
+protected:
+  static std::map<std::string, uint64_t> GateIDMap;
+  static uint64_t UDGId;
+
+protected:
+  uint32_t LookupGID(const ASTIdentifierNode* Id) {
+    std::map<std::string, uint64_t>::const_iterator GI =
+      GateIDMap.find(Id->GetName());
+    if (GI != GateIDMap.end())
+      return (*GI).second;
+    else {
+      uint64_t NGID = ASTGateNode::UDGId++;
+      GateIDMap.insert(std::make_pair(Id->GetName(), NGID));
+      return NGID;
+    }
+  }
+
+  static std::map<std::string, uint64_t>& GetGateIDMap() {
+    return GateIDMap;
+  }
 
 protected:
   std::vector<ASTAngleNode*> Params;
@@ -61,6 +84,7 @@ protected:
 
   const ASTIdentifierNode* GDId;
   std::map<std::string, const ASTSymbolTableEntry*> GSTM;
+  uint64_t GID;
   mutable ASTType ControlType;
   bool Opaque;
   bool GateCall;
@@ -165,6 +189,10 @@ public:
 
   virtual const ASTIdentifierNode* GetGateDefinitionId() const {
     return GDId;
+  }
+
+  virtual uint64_t GetGateID() const {
+    return GID;
   }
 
   virtual std::map<std::string, const ASTSymbolTableEntry*>& GetSymbolTable() {

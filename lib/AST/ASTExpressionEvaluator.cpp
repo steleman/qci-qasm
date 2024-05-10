@@ -97,8 +97,29 @@ ASTExpressionEvaluator::EvaluatesTo(const ASTBinaryOpNode* BOp) const {
         dynamic_cast<const ASTOperatorNode*>(BOp->GetLeft())) {
       if (OPN->IsIdentifier())
         LTy = OPN->GetTargetIdentifier()->GetSymbolType();
-      else
+      else {
         LTy = OPN->GetTargetExpression()->GetASTType();
+        switch (LTy) {
+        case ASTTypeImplicitConversion: {
+          if (const ASTImplicitConversionNode* ICN =
+              dynamic_cast<const ASTImplicitConversionNode*>(OPN->GetTargetExpression()))
+            LTy = ICN->GetConvertTo();
+          else
+            LTy = ASTTypeUndefined;
+        }
+          break;
+        case ASTTypeCast: {
+          if (const ASTCastExpressionNode* CXN =
+              dynamic_cast<const ASTCastExpressionNode*>(OPN->GetTargetExpression()))
+            LTy = CXN->GetCastTo();
+          else
+            LTy = ASTTypeUndefined;
+        }
+          break;
+        default:
+          break;
+        }
+      }
     } else {
       LTy = ASTTypeUndefined;
     }
@@ -109,8 +130,29 @@ ASTExpressionEvaluator::EvaluatesTo(const ASTBinaryOpNode* BOp) const {
         dynamic_cast<const ASTOperandNode*>(BOp->GetLeft())) {
       if (OPD->IsIdentifier())
         LTy = OPD->GetIdentifier()->GetSymbolType();
-      else
+      else {
         LTy = OPD->GetExpression()->GetASTType();
+        switch (LTy) {
+        case ASTTypeImplicitConversion: {
+          if (const ASTImplicitConversionNode* ICN =
+              dynamic_cast<const ASTImplicitConversionNode*>(OPD->GetExpression()))
+            LTy = ICN->GetConvertTo();
+          else
+            LTy = ASTTypeUndefined;
+        }
+          break;
+        case ASTTypeCast: {
+          if (const ASTCastExpressionNode* CXN =
+              dynamic_cast<const ASTCastExpressionNode*>(OPD->GetExpression()))
+            LTy = CXN->GetCastTo();
+          else
+            LTy = ASTTypeUndefined;
+        }
+          break;
+        default:
+          break;
+        }
+      }
     } else {
       LTy = ASTTypeUndefined;
     }
@@ -121,8 +163,29 @@ ASTExpressionEvaluator::EvaluatesTo(const ASTBinaryOpNode* BOp) const {
         dynamic_cast<const ASTOperatorNode*>(BOp->GetRight())) {
       if (OPN->IsIdentifier())
         RTy = OPN->GetTargetIdentifier()->GetSymbolType();
-      else
+      else {
         RTy = OPN->GetTargetExpression()->GetASTType();
+        switch (RTy) {
+        case ASTTypeImplicitConversion: {
+          if (const ASTImplicitConversionNode* ICN =
+              dynamic_cast<const ASTImplicitConversionNode*>(OPN->GetTargetExpression()))
+            RTy = ICN->GetConvertTo();
+          else
+            RTy = ASTTypeUndefined;
+        }
+          break;
+        case ASTTypeCast: {
+          if (const ASTCastExpressionNode* CXN =
+              dynamic_cast<const ASTCastExpressionNode*>(OPN->GetTargetExpression()))
+            RTy = CXN->GetCastTo();
+          else
+            RTy = ASTTypeUndefined;
+        }
+          break;
+        default:
+          break;
+        }
+      }
     } else {
       RTy = ASTTypeUndefined;
     }
@@ -133,8 +196,29 @@ ASTExpressionEvaluator::EvaluatesTo(const ASTBinaryOpNode* BOp) const {
         dynamic_cast<const ASTOperandNode*>(BOp->GetRight())) {
       if (OPD->IsIdentifier())
         RTy = OPD->GetIdentifier()->GetSymbolType();
-      else
+      else {
         RTy = OPD->GetExpression()->GetASTType();
+        switch (RTy) {
+        case ASTTypeImplicitConversion: {
+          if (const ASTImplicitConversionNode* ICN =
+              dynamic_cast<const ASTImplicitConversionNode*>(OPD->GetExpression()))
+            RTy = ICN->GetConvertTo();
+          else
+            RTy = ASTTypeUndefined;
+        }
+          break;
+        case ASTTypeCast: {
+          if (const ASTCastExpressionNode* CXN =
+              dynamic_cast<const ASTCastExpressionNode*>(OPD->GetExpression()))
+            RTy = CXN->GetCastTo();
+          else
+            RTy = ASTTypeUndefined;
+        }
+          break;
+        default:
+          break;
+        }
+      }
     } else {
       RTy = ASTTypeUndefined;
     }

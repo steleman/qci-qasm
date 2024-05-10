@@ -38,9 +38,12 @@
 #include <sstream>
 #include <string>
 #include <set>
+#include <climits>
 
 namespace QASM {
 
+std::map<std::string, uint64_t> ASTGateNode::GateIDMap;
+uint64_t ASTGateNode::UDGId = UINT_MAX;
 ASTGateQOpList ASTGateQOpList::EmptyDefault;
 
 ASTGateContextBuilder ASTGateContextBuilder::GCB;
@@ -535,11 +538,14 @@ ASTGateNode::ASTGateNode(const ASTIdentifierNode* Id,
                          const ASTGateQOpList& OL)
   : ASTExpressionNode(Id, ASTTypeGate), Params(), Qubits(), QCParams(),
   OpList(OL), Ctrl(nullptr), GDId(IsGateCall ? nullptr : Id), GSTM(),
-  ControlType(ASTTypeUndefined), Opaque(false), GateCall(IsGateCall) {
+  GID(static_cast<uint64_t>(~0x0UL)), ControlType(ASTTypeUndefined),
+  Opaque(false), GateCall(IsGateCall) {
   unsigned C = 0;
   std::set<std::string> PNS;
   std::vector<const ASTIdentifierNode*> NQV;
   ASTType Ty = ASTTypeUndefined;
+
+  GID = LookupGID(Id);
 
   for (ASTArgumentNodeList::const_iterator I = AL.begin();
        I != AL.end(); ++I) {
@@ -1315,10 +1321,13 @@ ASTGateNode::ASTGateNode(const ASTIdentifierNode* Id,
                          const ASTGateQOpList& OL)
   : ASTExpressionNode(Id, ASTTypeGate), Params(), Qubits(), QCParams(),
   OpList(OL), Ctrl(nullptr), GDId(IsGateCall ? nullptr : Id), GSTM(),
-  ControlType(ASTTypeUndefined), Opaque(false), GateCall(IsGateCall) {
+  GID(static_cast<uint64_t>(~0x0UL)), ControlType(ASTTypeUndefined),
+  Opaque(false), GateCall(IsGateCall) {
   unsigned C = 0;
   std::set<std::string> PNS;
   std::vector<const ASTIdentifierNode*> NQV;
+
+  GID = LookupGID(Id);
 
   if (!IsGateCall && Id->GetName() == u8"U") {
     MaterializeBuiltinUGate(Id, PL, IL);
@@ -1609,6 +1618,7 @@ void ASTGateNode::print() const {
   std::cout << "<Name>" << GetName() << "</Name>" << std::endl;
   std::cout << "<MangledName>" << GetMangledName() << "</MangledName>"
     << std::endl;
+  std::cout << "<GateID>" << GID << "</GateID>" << std::endl;
   std::cout << "<Opaque>" << std::boolalpha << Opaque
     << "</Opaque>" << std::endl;
   std::cout << "<GateCall>" << std::boolalpha << GateCall
@@ -2507,6 +2517,7 @@ ASTGateNode::CloneCall(const ASTIdentifierNode* Id,
   RG->GDId = Id;
   RG->Void = Void;
   RG->ControlType = ControlType;
+  RG->GID = GID;
   RG->Opaque = Opaque;
   RG->GateCall = true;
   RG->Mangle();
@@ -2532,6 +2543,7 @@ ASTUGateNode::CloneCall(const ASTIdentifierNode* Id,
   RG->GDId = Id;
   RG->Void = Void;
   RG->ControlType = ControlType;
+  RG->GID = GID;
   RG->Opaque = Opaque;
   RG->GateCall = true;
   RG->Mangle();
@@ -2557,6 +2569,7 @@ ASTCXGateNode::CloneCall(const ASTIdentifierNode* Id,
   RG->GDId = Id;
   RG->Void = Void;
   RG->ControlType = ControlType;
+  RG->GID = GID;
   RG->Opaque = Opaque;
   RG->GateCall = true;
   RG->Mangle();
@@ -2582,6 +2595,7 @@ ASTCXGateNode::CloneCall(const ASTIdentifierNode* Id,
   RG->GDId = Id;
   RG->Void = Void;
   RG->ControlType = ControlType;
+  RG->GID = GID;
   RG->Opaque = Opaque;
   RG->GateCall = true;
   RG->Mangle();
@@ -2607,6 +2621,7 @@ ASTCCXGateNode::CloneCall(const ASTIdentifierNode* Id,
   RG->GDId = Id;
   RG->Void = Void;
   RG->ControlType = ControlType;
+  RG->GID = GID;
   RG->Opaque = Opaque;
   RG->GateCall = true;
   RG->Mangle();
@@ -2632,6 +2647,7 @@ ASTCCXGateNode::CloneCall(const ASTIdentifierNode* Id,
   RG->GDId = Id;
   RG->Void = Void;
   RG->ControlType = ControlType;
+  RG->GID = GID;
   RG->Opaque = Opaque;
   RG->GateCall = true;
   RG->Mangle();
@@ -2657,6 +2673,7 @@ ASTHadamardGateNode::CloneCall(const ASTIdentifierNode* Id,
   RG->GDId = Id;
   RG->Void = Void;
   RG->ControlType = ControlType;
+  RG->GID = GID;
   RG->Opaque = Opaque;
   RG->GateCall = true;
   RG->Mangle();
@@ -2682,6 +2699,7 @@ ASTCNotGateNode::CloneCall(const ASTIdentifierNode* Id,
   RG->GDId = Id;
   RG->Void = Void;
   RG->ControlType = ControlType;
+  RG->GID = GID;
   RG->Opaque = Opaque;
   RG->GateCall = true;
   RG->Mangle();

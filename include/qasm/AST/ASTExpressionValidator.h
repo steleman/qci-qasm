@@ -714,6 +714,28 @@ public:
   bool CanBeAssignedTo(const ASTIdentifierNode* Id) const;
 
   bool CanBeAssignedTo(const ASTExpressionNode* EX) const;
+
+  bool CanDoCeilFloorTruncate(ASTType Ty) const {
+    switch (Ty) {
+    case ASTTypeFloat:
+    case ASTTypeDouble:
+    case ASTTypeLongDouble:
+    case ASTTypeMPDecimal:
+      return true;
+      break;
+    default:
+      break;
+    }
+
+    return false;
+  }
+
+  bool CanDoCeilFloorTruncate(const ASTIdentifierNode* Id) const {
+    assert(Id && "Invalid ASTIdentifierNode argument!");
+    return CanDoCeilFloorTruncate(Id->GetSymbolType());
+  }
+
+  bool CanDoCeilFloorTruncate(const ASTExpressionNode* EX) const;
 };
 
 } // namespace QASM

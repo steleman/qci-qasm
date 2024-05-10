@@ -686,4 +686,16 @@ add_test(NAME t00338
          COMMAND ${BASH} -c "${OPENQASM_TEST_PROGRAM} -I${OPENQASM_TEST_INCDIR} ${OPENQASM_TEST_SRCDIR}/test-exit-1.qasm > ${CMAKE_BINARY_DIR}/tests/test-exit-1.qasm.out 2>&1")
 add_test(NAME t00339
          COMMAND ${BASH} -c "${OPENQASM_TEST_PROGRAM} -I${OPENQASM_TEST_INCDIR} ${OPENQASM_TEST_SRCDIR}/test-halt-1.qasm > ${CMAKE_BINARY_DIR}/tests/test-halt-1.qasm.out 2>&1")
+add_test(NAME t00340
+         COMMAND ${BASH} -c "${OPENQASM_TEST_PROGRAM} -I${OPENQASM_TEST_INCDIR} ${OPENQASM_TEST_SRCDIR}/test-ceil-1.qasm > ${CMAKE_BINARY_DIR}/tests/test-ceil-1.qasm.out 2>&1")
+add_test(NAME t00341
+         COMMAND ${BASH} -c "${OPENQASM_TEST_PROGRAM} -I${OPENQASM_TEST_INCDIR} ${OPENQASM_TEST_SRCDIR}/test-ceil-2.qasm > ${CMAKE_BINARY_DIR}/tests/test-ceil-2.qasm.out 2>&1")
+add_test(NAME t00342
+         COMMAND ${BASH} -c "${OPENQASM_TEST_PROGRAM} -I${OPENQASM_TEST_INCDIR} ${OPENQASM_TEST_SRCDIR}/test-floor-1.qasm > ${CMAKE_BINARY_DIR}/tests/test-floor-1.qasm.out 2>&1")
+add_test(NAME t00343
+         COMMAND ${BASH} -c "${OPENQASM_TEST_PROGRAM} -I${OPENQASM_TEST_INCDIR} ${OPENQASM_TEST_SRCDIR}/test-floor-2.qasm > ${CMAKE_BINARY_DIR}/tests/test-floor-2.qasm.out 2>&1")
+add_test(NAME t00344
+         COMMAND ${BASH} -c "${OPENQASM_TEST_PROGRAM} -I${OPENQASM_TEST_INCDIR} ${OPENQASM_TEST_SRCDIR}/test-truncate-1.qasm > ${CMAKE_BINARY_DIR}/tests/test-truncate-1.qasm.out 2>&1")
+add_test(NAME t00345
+         COMMAND ${BASH} -c "${OPENQASM_TEST_PROGRAM} -I${OPENQASM_TEST_INCDIR} ${OPENQASM_TEST_SRCDIR}/test-truncate-2.qasm > ${CMAKE_BINARY_DIR}/tests/test-truncate-2.qasm.out 2>&1")
 

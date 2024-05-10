@@ -1505,6 +1505,45 @@ void comment_error(const char* msg) {
   return yylval->Tok->GetInt();
 }
 
+"ceil" {
+  yylval->Tok = ASTTokenFactory::Create(yytext, token::TOK_CEIL);
+  assert(yylval->Tok && "Could not create a valid ASTToken!");
+  yylval->Token = yylval->Tok->GetInt();
+  yylval->String = yylval->Tok->GetStringAddress();
+  yylval->Tok->SetLocation(DIAGLineCounter::Instance().GetLineCount(),
+                           prev_yycolno + 1);
+  ASTTokenFactory::Register(yylval->Tok, yylval->Tok->GetIndex());
+  QASM::QasmFeatureTester::Instance().ValidateFeature(yytext);
+  QASM::ASTIdentifierTypeController::Instance().SetCurrentType(ASTTypeCeil);
+  return yylval->Tok->GetInt();
+}
+
+"floor" {
+  yylval->Tok = ASTTokenFactory::Create(yytext, token::TOK_FLOOR);
+  assert(yylval->Tok && "Could not create a valid ASTToken!");
+  yylval->Token = yylval->Tok->GetInt();
+  yylval->String = yylval->Tok->GetStringAddress();
+  yylval->Tok->SetLocation(DIAGLineCounter::Instance().GetLineCount(),
+                           prev_yycolno + 1);
+  ASTTokenFactory::Register(yylval->Tok, yylval->Tok->GetIndex());
+  QASM::QasmFeatureTester::Instance().ValidateFeature(yytext);
+  QASM::ASTIdentifierTypeController::Instance().SetCurrentType(ASTTypeFloor);
+  return yylval->Tok->GetInt();
+}
+
+"truncate" {
+  yylval->Tok = ASTTokenFactory::Create(yytext, token::TOK_TRUNCATE);
+  assert(yylval->Tok && "Could not create a valid ASTToken!");
+  yylval->Token = yylval->Tok->GetInt();
+  yylval->String = yylval->Tok->GetStringAddress();
+  yylval->Tok->SetLocation(DIAGLineCounter::Instance().GetLineCount(),
+                           prev_yycolno + 1);
+  ASTTokenFactory::Register(yylval->Tok, yylval->Tok->GetIndex());
+  QASM::QasmFeatureTester::Instance().ValidateFeature(yytext);
+  QASM::ASTIdentifierTypeController::Instance().SetCurrentType(ASTTypeTrunc);
+  return yylval->Tok->GetInt();
+}
+
 "@" {
   yylval->Tok = ASTTokenFactory::Create(yytext, token::TOK_ASSOCIATION_OP);
   assert(yylval->Tok && "Could not create a valid ASTToken!");

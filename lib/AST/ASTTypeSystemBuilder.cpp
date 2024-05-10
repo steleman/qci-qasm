@@ -356,11 +356,51 @@ void ASTTypeSystemBuilder::Init() {
 
   ASTTypeSystemBuilder::Instance().CreateASTReservedAngles();
   ASTTypeSystemBuilder::Instance().CreateASTReservedMPDecimalValues();
+  ASTTypeSystemBuilder::Instance().CreateStandardGateIDs();
   ASTTypeSystemBuilder::Instance().CreateASTBuiltinUGate();
   ASTTypeSystemBuilder::Instance().CreateASTBuiltinCXGate();
 
   ASTDefcalGrammarBuilder::Instance().SetCurrent("openpulse");
   ASTBuiltinFunctionsBuilder::Instance().Init();
+}
+
+void ASTTypeSystemBuilder::CreateStandardGateIDs() const {
+  std::map<std::string, uint64_t>& GateIDMap = ASTGateNode::GetGateIDMap();
+  GateIDMap = {
+    { "U", 0UL },
+    { "CX", 1UL },
+    { "p", 2UL },
+    { "x", 3UL },
+    { "y", 4UL },
+    { "z", 5UL },
+    { "h", 6UL },
+    { "s", 7UL },
+    { "sdg", 8UL },
+    { "t", 9UL },
+    { "tdg", 10UL },
+    { "sx", 11UL },
+    { "rx", 12UL },
+    { "ry", 13UL },
+    { "rz", 14UL },
+    { "cx", 15UL },
+    { "cy", 16UL },
+    { "cz", 17UL },
+    { "cp", 18UL },
+    { "crx", 19UL },
+    { "cry", 20UL },
+    { "crz", 21UL },
+    { "ch", 22UL },
+    { "swap", 23UL },
+    { "ccx", 24UL },
+    { "cswap", 25UL },
+    { "cu", 26UL },
+    { "phase", 27UL },
+    { "cphase", 28UL },
+    { "id", 29UL },
+    { "u1", 30UL },
+    { "u2", 31UL },
+    { "u3", 32UL },
+  };
 }
 
 void ASTTypeSystemBuilder::CreateASTBuiltinUGate() const {

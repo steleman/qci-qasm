@@ -68,6 +68,8 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -finput-charset=UTF-8 -fextended-identi
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstandalone-debug -Wno-deprecated")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-redundant-move -Wno-microsoft-anon-tag")
 set (CMAKE_CXX_FLAGS" ${CMAKE_CXX_FLAGS} -Wno-vla -Wno-vla-extension")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-misleading-indentation")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-gnu-anonymous-struct")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${HOMEBREW_PREFIX}/include")
 
 if (${OS_UNAME_MACHINE} STREQUAL "arm64")

@@ -625,6 +625,7 @@ int readinput() {
 %token <Token> TOK_LEFT_SHIFT_OP TOK_RIGHT_SHIFT_OP
 %token <Token> TOK_ADD_OP TOK_SUB_OP TOK_MUL_OP TOK_DIV_OP TOK_POW_OP
 %token <Token> TOK_MOD_OP
+%token <Token> TOK_CEIL TOK_FLOOR TOK_TRUNCATE
 %token <Token> TOK_LE_OP TOK_GE_OP TOK_EQ_OP TOK_NE_OP TOK_AND_OP
 %token <Token> TOK_OR_OP TOK_MUL_ASSIGN TOK_DIV_ASSIGN TOK_MOD_ASSIGN
 %token <Token> TOK_ADD_ASSIGN TOK_SUB_ASSIGN
@@ -4507,6 +4508,66 @@ UnaryOp
   | TOK_SQRT '(' Real ')' {
     $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
                                                              ASTOpTypeSqrt);
+  }
+  | TOK_CEIL '(' Identifier ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeCeil);
+  }
+  | TOK_CEIL '(' BinaryOpExpr ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeCeil);
+  }
+  | TOK_CEIL '(' UnaryOp ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeCeil);
+  }
+  | TOK_CEIL '(' Real ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeCeil);
+  }
+  | TOK_CEIL '(' FunctionCallExpr ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeCeil);
+  }
+  | TOK_FLOOR '(' Identifier ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeFloor);
+  }
+  | TOK_FLOOR '(' BinaryOpExpr ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeFloor);
+  }
+  | TOK_FLOOR '(' UnaryOp ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeFloor);
+  }
+  | TOK_FLOOR '(' Real ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeFloor);
+  }
+  | TOK_FLOOR '(' FunctionCallExpr ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeFloor);
+  }
+  | TOK_TRUNCATE '(' Identifier ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeTrunc);
+  }
+  | TOK_TRUNCATE '(' BinaryOpExpr ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeTrunc);
+  }
+  | TOK_TRUNCATE '(' UnaryOp ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeTrunc);
+  }
+  | TOK_TRUNCATE '(' Real ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeTrunc);
+  }
+  | TOK_TRUNCATE '(' FunctionCallExpr ')' {
+    $$ = ASTProductionFactory::Instance().ProductionRule_300(GET_TOKEN(3), $3,
+                                                             ASTOpTypeTrunc);
   }
   ;
 

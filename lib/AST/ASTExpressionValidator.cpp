@@ -758,6 +758,11 @@ bool ASTExpressionValidator::Validate(const ASTUnaryOpNode* UOp) const {
     return IsUnPromotedIntegerType(ETy) || IsFloatingPointType(ETy) ||
            IsComplexType(ETy);
     break;
+  case ASTOpTypeCeil:
+  case ASTOpTypeFloor:
+  case ASTOpTypeTrunc:
+    return ASTExpressionValidator::Instance().CanDoCeilFloorTruncate(ETy);
+    break;
   case ASTOpTypeNegative:
   case ASTOpTypePositive:
     return ASTExpressionValidator::Instance().CanDoArithmeticNegPos(ETy);
@@ -1384,6 +1389,71 @@ bool ASTExpressionValidator::CanBeAssignedTo(const ASTExpressionNode* EX) const 
       DIAGLineCounter::Instance().GetLocation(EX), M.str(), DiagLevel::Error);
     return false;
   }
+    break;
+  }
+
+  return false;
+}
+
+bool
+ASTExpressionValidator::CanDoCeilFloorTruncate(const ASTExpressionNode* EX) const {
+  assert(EX && "Invalid ASTExpressionNode argument!");
+
+  switch (EX->GetASTType()) {
+  case ASTTypeFloat:
+  case ASTTypeDouble:
+  case ASTTypeLongDouble:
+  case ASTTypeMPDecimal:
+    return true;
+    break;
+  case ASTTypeBinaryOp: {
+    if (const ASTBinaryOpNode* BOp = dynamic_cast<const ASTBinaryOpNode*>(EX)) {
+      ASTType RTy = ASTExpressionEvaluator::Instance().EvaluatesTo(BOp);
+      return CanDoCeilFloorTruncate(RTy);
+    }
+  }
+    break;
+  case ASTTypeUnaryOp: {
+    if (const ASTUnaryOpNode* UOp = dynamic_cast<const ASTUnaryOpNode*>(EX)) {
+      ASTType RTy = ASTExpressionEvaluator::Instance().EvaluatesTo(UOp);
+      return CanDoCeilFloorTruncate(RTy);
+    }
+  }
+    break;
+  case ASTTypeCast: {
+    if (const ASTCastExpressionNode* XST =
+        dynamic_cast<const ASTCastExpressionNode*>(EX)) {
+      return CanDoCeilFloorTruncate(XST->GetCastTo());
+    }
+  }
+    break;
+  case ASTTypeFunctionCall: {
+    if (const ASTFunctionCallNode* FCN = dynamic_cast<const ASTFunctionCallNode*>(EX)) {
+      if (const ASTFunctionDefinitionNode* FDN =
+          dynamic_cast<const ASTFunctionDefinitionNode*>(FCN->GetFunctionDefinition()))
+        return CanDoCeilFloorTruncate(FDN->GetResultType());
+    }
+  }
+    break;
+  case ASTTypeOpTy: {
+    if (const ASTOperatorNode* OPN = dynamic_cast<const ASTOperatorNode*>(EX)) {
+      if (OPN->IsIdentifier())
+        return CanDoCeilFloorTruncate(OPN->GetTargetIdentifier()->GetSymbolType());
+      else
+        return CanDoCeilFloorTruncate(OPN->GetTargetExpression()->GetASTType());
+    }
+  }
+    break;
+  case ASTTypeOpndTy: {
+    if (const ASTOperandNode* OPD = dynamic_cast<const ASTOperandNode*>(EX)) {
+      if (OPD->IsIdentifier())
+        return CanDoCeilFloorTruncate(OPD->GetIdentifier()->GetSymbolType());
+      else
+        return CanDoCeilFloorTruncate(OPD->GetExpression()->GetASTType());
+    }
+  }
+    break;
+  default:
     break;
   }
 

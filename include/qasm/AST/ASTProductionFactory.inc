@@ -48,6 +48,24 @@ ASTProductionFactory::ProductionRule_300(const ASTToken* TK,
     }
   }
 
+  switch (OTy) {
+    case ASTOpTypeCeil:
+    case ASTOpTypeFloor:
+    case ASTOpTypeTrunc: {
+      if (!ASTExpressionValidator::Instance().CanDoCeilFloorTruncate(TP)) {
+        std::stringstream M;
+        M << "Invalid operand type for " << PrintDashOpTypeEnum(OTy)
+          << " unary op.";
+        QasmDiagnosticEmitter::Instance().EmitDiagnostic(
+          DIAGLineCounter::Instance().GetLocation(TP), M.str(), DiagLevel::Error);
+        return ASTUnaryOpNode::ExpressionError(M.str(), OTy);
+      }
+    }
+      break;
+    default:
+      break;
+  }
+
   ASTOperandNode* OPX = ASTBuilder::Instance().CreateASTOperandNode(TP);
   assert(OPX && "Could not create a valid ASTOperandNode!");
   if (!OPX) {

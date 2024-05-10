@@ -47,6 +47,7 @@ protected:
   bool LocateImplicitSymbol(const std::string& S) const;
 
 protected:
+  void CreateStandardGateIDs() const;
   void CreateASTBuiltinCXGate() const;
   void CreateASTBuiltinUGate() const;
   void CreateASTReservedAngles() const;
